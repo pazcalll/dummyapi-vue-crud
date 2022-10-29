@@ -27,73 +27,56 @@
     >
       <q-list>
         <q-item-label header>Essential Links</q-item-label>
-        <q-item clickable tag="a" target="_blank" href="https://quasar.dev">
+        <q-item clickable tag="a" href="#/">
           <q-item-section avatar>
-            <q-icon name="school" />
+            <q-icon name="home" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Docs</q-item-label>
-            <q-item-label caption>quasar.dev</q-item-label>
+            <q-item-label>Home</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable tag="a" target="_blank" href="https://github.com/quasarframework/">
+        <q-item clickable tag="a" href="#/crud">
           <q-item-section avatar>
             <q-icon name="code" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Github</q-item-label>
-            <q-item-label caption>github.com/quasarframework</q-item-label>
-          </q-item-section>
-        </q-item>
-        <q-item clickable tag="a" target="_blank" href="https://chat.quasar.dev">
-          <q-item-section avatar>
-            <q-icon name="chat" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>Discord Chat Channel</q-item-label>
-            <q-item-label caption>chat.quasar.dev</q-item-label>
-          </q-item-section>
-        </q-item>
-        <q-item clickable tag="a" target="_blank" href="https://forum.quasar.dev">
-          <q-item-section avatar>
-            <q-icon name="forum" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>Forum</q-item-label>
-            <q-item-label caption>forum.quasar.dev</q-item-label>
-          </q-item-section>
-        </q-item>
-        <q-item clickable tag="a" target="_blank" href="https://twitter.com/quasarframework">
-          <q-item-section avatar>
-            <q-icon name="rss_feed" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>Twitter</q-item-label>
-            <q-item-label caption>@quasarframework</q-item-label>
+            <q-item-label>CRUD</q-item-label>
           </q-item-section>
         </q-item>
       </q-list>
     </q-drawer>
 
     <q-page-container>
-      <HelloWorld />
+      <component :is="currentView" />
     </q-page-container>
   </q-layout>
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import HelloWorld from './components/HelloWorld.vue'
+import Crud from './components/Crud.vue'
 
 export default {
   name: 'LayoutDefault',
 
-  components: {
-    HelloWorld
-  },
-
   setup () {
+    const routes = {
+      '/': HelloWorld,
+      '/crud': Crud
+    }
+
+    const currentPath = ref(window.location.hash)
+
+    window.addEventListener('hashchange', () => {
+      currentPath.value = window.location.hash
+    })
+
+    const currentView = computed(() => {
+      return routes[currentPath.value.slice(1) || '/'] || NotFound
+    })
     return {
+      currentView,
       leftDrawerOpen: ref(false)
     }
   }
