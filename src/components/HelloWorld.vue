@@ -1,5 +1,5 @@
 <template>
-  <q-page class="flex flex-center">
+  <q-page class="flex flex-center bg-amber-1">
     <!-- <img alt="Quasar logo" src="../assets/logo.svg" style="width: 200px; height: 200px"> -->
     <q-table
       v-model:pagination="pagination"
@@ -37,8 +37,9 @@ export default defineComponent({
     const loading = ref(true)
     const people = ref([])
     const pagination = ref({
-      page: 1,
-      rowsPerPage: 5
+      page: 0,
+      rowsNumber: 0,
+      rowsPerPage: 15
     })
     const columns = [
       {name: 'firstname', label: 'First Name', field: 'firstName', align: 'left'},
@@ -72,28 +73,28 @@ export default defineComponent({
           'app-id' : '635bbbeef6fbc5a993514485' 
         },
         params: {
-          page: page
+          page: page-1
         }
       })
       .then(response => {
         console.log(response.data)
         people.value = response.data.data
-  
-        pagination.value.page = response.data.page + 1
+
+        pagination.value.rowsPerPage = response.data.limit
+        pagination.value.page = response.data.page+1
+        pagination.value.rowsNumber = response.data.total
       })
       .finally(() => {
         loading.value = false
       })
     }
 
-    // onRequest('none')
+    const onRequest = (props) => {
+      console.log(props)
+      fetchData(props.pagination.page)
+    }
 
     fetchData()
-
-    const onRequest = (prop) => {
-      console.log(prop.data)
-      fetchData()
-    }
 
     return {
       people, 
