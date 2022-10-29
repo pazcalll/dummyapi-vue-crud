@@ -37,9 +37,9 @@ export default defineComponent({
     const loading = ref(true)
     const people = ref([])
     const pagination = ref({
-      page: 0,
+      page: 1,
       rowsNumber: 0,
-      rowsPerPage: 15
+      rowsPerPage: 10
     })
     const columns = [
       {name: 'firstname', label: 'First Name', field: 'firstName', align: 'left'},
@@ -67,17 +67,18 @@ export default defineComponent({
       return `"${formatted}"`
     }
 
-    const fetchData = (page = 0) => {
+    const fetchData = (page = 0, limit = 10) => {
       axios.get('https://dummyapi.io/data/v1/user', {
         headers: {
           'app-id' : '635bbbeef6fbc5a993514485' 
         },
         params: {
-          page: page-1
+          page: page-1,
+          limit: limit
         }
       })
       .then(response => {
-        console.log(response.data)
+        // console.log(response.data)
         people.value = response.data.data
 
         pagination.value.rowsPerPage = response.data.limit
@@ -90,8 +91,8 @@ export default defineComponent({
     }
 
     const onRequest = (props) => {
-      console.log(props)
-      fetchData(props.pagination.page)
+      // console.log(props)
+      fetchData(props.pagination.page, props.pagination.rowsPerPage)
     }
 
     fetchData()
