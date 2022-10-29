@@ -58,7 +58,36 @@
       </q-card-section>
 
       <q-card-section>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum repellendus sit voluptate voluptas eveniet porro. Rerum blanditiis perferendis totam, ea at omnis vel numquam exercitationem aut, natus minima, porro labore.
+        <q-input
+          label="First Name"
+          filled 
+          v-model="toChange.firstName" 
+          autofocus 
+          disable
+        />  
+        <q-input
+          label="Last Name"
+          filled 
+          v-model="toChange.lastName" 
+          autofocus
+          disable 
+        />  
+        <q-input
+          label="Title"
+          filled 
+          v-model="toChange.title" 
+          autofocus
+          disable 
+        />  
+      </q-card-section>
+      <hr>
+      <q-card-section>
+        <q-btn 
+          label="Confirm Delete" 
+          color="negative" 
+          class="on-right"
+          @click="deleteData"
+        />
       </q-card-section>
     </q-card>
   </q-dialog>
@@ -71,12 +100,37 @@
       </q-card-section>
 
       <q-card-section>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum repellendus sit voluptate voluptas eveniet porro. Rerum blanditiis perferendis totam, ea at omnis vel numquam exercitationem aut, natus minima, porro labore.
+        <q-input
+          label="First Name"
+          filled 
+          v-model="toChange.firstName" 
+          autofocus 
+        />  
+        <q-input
+          label="Last Name"
+          filled 
+          v-model="toChange.lastName" 
+          autofocus 
+        />  
+        <q-input
+          label="Title"
+          filled 
+          v-model="toChange.title" 
+          autofocus 
+        />  
+      </q-card-section>
+      <hr>
+      <q-card-section>
+        <q-btn 
+          label="Update Data" 
+          color="warning" 
+          class="on-right"
+        />
       </q-card-section>
     </q-card>
   </q-dialog>
 </template>
-
+  
 <style>
 </style>
 
@@ -90,6 +144,7 @@ export default defineComponent({
   setup() {
     const modalDelete = ref(false)
     const modalUpdate = ref(false)
+    const toChange = ref({})
 
     const $q = useQuasar()
     const loading = ref(true)
@@ -99,7 +154,6 @@ export default defineComponent({
       rowsNumber: 0,
       rowsPerPage: 10
     })
-    const img = ref([])
     const columns = [
       {name: 'index', label: '#', field: "", align:"left"},
       {name: 'firstname', label: 'First Name', field: 'firstName', align: 'left'},
@@ -157,7 +211,27 @@ export default defineComponent({
     }
 
     const openModal = (props, modalDelete = false, modalUpdate = false) => {
-      console.log(props)
+      toChange.value = props.row
+    }
+
+    const deleteData = (evt) => {
+      axios.delete('https://dummyapi.io/data/v1/user/'+toChange.value.id,
+        {
+          headers: {
+            'app-id': '635bbbeef6fbc5a993514485'
+          }
+        }
+      )
+        .then(response => {
+          if (response.status == 200) {
+            fetchData(pagination.value.page, pagination.value.rowsPerPage)
+            modalDelete.value = false
+          }
+        })
+    }
+
+    const updateData = () => {
+
     }
 
     const fetchData = (page = 0, limit = 10) => {
@@ -194,6 +268,11 @@ export default defineComponent({
       modalDelete,
       modalUpdate,
       openModal,
+
+      deleteData,
+      updateData,
+
+      toChange,
 
       people, 
       pagination, 
