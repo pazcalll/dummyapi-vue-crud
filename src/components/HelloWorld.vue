@@ -7,6 +7,7 @@
       :loading="loading"
       :rows="people"
       :columns="columns"
+      row-key="index"
       @request="onRequest"
     >
       <template v-slot:top-right>
@@ -17,6 +18,18 @@
           no-caps
           @click="exportTable"
         />
+      </template>
+      <template #body-cell-index="props">
+        <q-td :props="props">
+          {{ props.rowIndex + 1 }}
+        </q-td>
+      </template>
+      <template #body-cell-picture="props">
+        <q-td :props="props">
+          <q-img 
+            :src="props.value"
+          />
+        </q-td>
       </template>
     </q-table>
   </q-page>
@@ -41,10 +54,13 @@ export default defineComponent({
       rowsNumber: 0,
       rowsPerPage: 10
     })
+    const img = ref([])
     const columns = [
+      {name: 'index', label: '#', field: "", align:"left"},
       {name: 'firstname', label: 'First Name', field: 'firstName', align: 'left'},
-      {name: 'lastname', label: 'Last Name', field: 'lastName', align: 'center'},
-      {name: 'title', label: 'Title', field: 'title', align: 'left'}
+      {name: 'lastname', label: 'Last Name', field: 'lastName', align: 'left'},
+      {name: 'title', label: 'Title', field: 'title', align: 'left'},
+      {name: 'picture', label: 'Picture', field: 'picture', align: 'left'}
     ]
 
     const wrapCsvValue = (val, formatFn, row) => {
