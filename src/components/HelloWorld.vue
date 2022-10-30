@@ -11,6 +11,12 @@
       dense
       @request="onRequest"
     >
+      <template #loading>
+        <q-inner-loading
+          showing
+          color="primary"
+        />
+      </template>
       <template v-slot:top-right>
         <q-btn
           color="primary"
@@ -125,6 +131,7 @@
           label="Update Data" 
           color="warning" 
           class="on-right"
+          @click="updateData"
         />
       </q-card-section>
     </q-card>
@@ -194,6 +201,7 @@ export default defineComponent({
           row
         )).join(','))
       ).join('\r\n')
+      // console.log(columns)
 
       const status = exportFile(
         'table-export.csv',
@@ -214,7 +222,7 @@ export default defineComponent({
       toChange.value = props.row
     }
 
-    const deleteData = (evt) => {
+    const deleteData = () => {
       axios.delete('https://dummyapi.io/data/v1/user/'+toChange.value.id,
         {
           headers: {
@@ -231,16 +239,34 @@ export default defineComponent({
     }
 
     const updateData = () => {
-
+      axios({
+        method:'put',
+        url:'https://dummyapi.io/data/v1/user/'+toChange.value.id,
+        headers: {
+          'app-id': '635bbbeef6fbc5a993514485'
+        },
+        data: {
+          firstName: toChange.value.firstName,
+          lastName: toChange.value.lastName,
+          title: toChange.value.title
+        }
+      })
+        .then(response => {
+          if (response.status == 200) {
+            fetchData(props.pagination.page, props.pagination.rowsPerPage)
+            modalUpdate.value = false
+          }
+        })
     }
 
     const fetchData = (page = 0, limit = 10) => {
+      loading.value = true
       axios.get('https://dummyapi.io/data/v1/user', {
         headers: {
           'app-id' : '635bbbeef6fbc5a993514485' 
         },
         params: {
-          page: page-1,
+          page: page-1 < 0 ? 0 : page-1,
           limit: limit
         }
       })
@@ -258,7 +284,6 @@ export default defineComponent({
     }
 
     const onRequest = (props) => {
-      // console.log(props)
       fetchData(props.pagination.page, props.pagination.rowsPerPage)
     }
 

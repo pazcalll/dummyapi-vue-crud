@@ -35,12 +35,12 @@
             <q-item-label>Home</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable tag="a" href="#/crud">
+        <q-item clickable tag="a" href="#/add-user">
           <q-item-section avatar>
-            <q-icon name="code" />
+            <q-icon name="add_circle" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>CRUD</q-item-label>
+            <q-item-label>Add User</q-item-label>
           </q-item-section>
         </q-item>
       </q-list>
@@ -55,7 +55,8 @@
 <script>
 import { ref, computed } from 'vue'
 import HelloWorld from './components/HelloWorld.vue'
-import Crud from './components/Crud.vue'
+import AddUser from './components/AddUser.vue'
+import NotFound from './components/NotFound.vue'
 
 export default {
   name: 'LayoutDefault',
@@ -63,7 +64,7 @@ export default {
   setup () {
     const routes = {
       '/': HelloWorld,
-      '/crud': Crud
+      '/add-user': AddUser
     }
 
     const currentPath = ref(window.location.hash)
