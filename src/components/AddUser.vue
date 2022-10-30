@@ -47,7 +47,7 @@
         :rules="[ val => val && val.length > 0 || 'Please type your title']"
       />
       <div class="mdi-format-float-center">
-        <q-btn label="Submit" type="submit" style="width: 100%" color="primary"/>
+        <q-btn label="Submit" type="submit" style="width: 100%;" class="btn-submit"/>
         <!-- <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" /> -->
       </div>
       <q-inner-loading :showing="loading">
@@ -56,6 +56,14 @@
     </q-form>
   </div>
 </template>
+
+<style lang="scss">
+  @import "@/styles/quasar.scss";
+  .btn-submit {
+    background: $primary-light;
+    color: $white-0;
+  }
+</style>
 
 <script>
 import axios from 'axios'

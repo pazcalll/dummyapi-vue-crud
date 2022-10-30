@@ -43,12 +43,12 @@
         <q-td class="q-pa-md q-gutter-sm" :props="props">
           <q-btn
             label="Delete" 
-            color="negative" 
+            class="btn-negative-light"
             @click="openModal(props, modalDelete = true)"
           />
           <q-btn
             label="Update" 
-            color="warning" 
+            class="btn-warning-light" 
             @click="openModal(props, modalUpdate = true)"
           />
         </q-td>
@@ -89,9 +89,8 @@
       <hr>
       <q-card-section>
         <q-btn 
-          label="Confirm Delete" 
-          color="negative" 
-          class="on-right"
+          label="Confirm Delete"  
+          class="on-right btn-negative-light"
           @click="deleteData"
         />
       </q-card-section>
@@ -137,8 +136,20 @@
     </q-card>
   </q-dialog>
 </template>
-  
-<style>
+
+<style lang="scss">
+  @import "@/styles/quasar.scss";
+  .btn-negative-light{
+    background: $negative-light;
+    color: $white-0;
+  }
+  .btn-warning-light{
+    background: $warning-light;
+    color: $white-0;
+  }
+  .q-btn:before{
+    box-shadow: none;
+  }
 </style>
 
 <script>
