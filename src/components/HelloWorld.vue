@@ -137,7 +137,7 @@
   </q-dialog>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
   @import "@/styles/quasar.scss";
   .btn-negative-light{
     background: $negative-light;
