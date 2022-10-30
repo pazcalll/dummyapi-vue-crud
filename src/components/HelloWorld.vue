@@ -193,16 +193,15 @@ export default defineComponent({
 
     const exportTable = () => {
       // naive encoding to csv format
-      const content = [columns.map(col => wrapCsvValue(col.label))].concat(
+      const content = [columns.map(col => col.name != "action" ? wrapCsvValue(col.label) : null)].concat(
         people.value.map(row => columns.map(col => wrapCsvValue(
-          typeof col.field === 'function'
+          col.name != "action" && typeof col.field === 'function'
             ? col.field(row)
             : row[ col.field === void 0 ? col.name : col.field ],
           col.format,
           row
         )).join(','))
       ).join('\r\n')
-      // console.log(columns)
 
       const status = exportFile(
         'table-export.csv',
