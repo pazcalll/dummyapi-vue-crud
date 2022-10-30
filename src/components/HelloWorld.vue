@@ -236,6 +236,11 @@ export default defineComponent({
             modalDelete.value = false
           }
         })
+        .finally(() => {
+          if (people.value.length < 1) {
+            fetchData(pagination.value.page-1, pagination.value.rowsPerPage)
+          }
+        })
     }
 
     const updateData = () => {

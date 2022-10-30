@@ -12,7 +12,7 @@
         />
 
         <q-toolbar-title>
-          Quasar App
+          Dummyapi App
         </q-toolbar-title>
 
         <div>Quasar v{{ $q.version }}</div>
@@ -26,7 +26,7 @@
       class="bg-primary q-list--dark"
     >
       <q-list>
-        <q-item-label header>Essential Links</q-item-label>
+        <q-item-label header>Links</q-item-label>
         <q-item clickable tag="a" href="#/">
           <q-item-section avatar>
             <q-icon name="home" />
