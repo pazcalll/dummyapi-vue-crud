@@ -26,11 +26,11 @@
           @click="exportTable"
         />
       </template>
-      <template #body-cell-index="props">
+      <!-- <template #body-cell-index="props">
         <q-td :props="props">
           {{ props.rowIndex + 1 }}
         </q-td>
-      </template>
+      </template> -->
       <template #body-cell-picture="props">
         <q-td :props="props">
           <q-img 
@@ -161,8 +161,9 @@ export default defineComponent({
       rowsNumber: 0,
       rowsPerPage: 10
     })
+    const _index = ref(0)
     const columns = [
-      {name: 'index', label: '#', field: "", align:"left"},
+      {name: 'index', label: '#', field: 'index', align:"left"},
       {name: 'firstname', label: 'First Name', field: 'firstName', align: 'left'},
       {name: 'lastname', label: 'Last Name', field: 'lastName', align: 'left'},
       {name: 'title', label: 'Title', field: 'title', align: 'left'},
@@ -276,8 +277,10 @@ export default defineComponent({
         }
       })
       .then(response => {
-        // console.log(response.data)
         people.value = response.data.data
+        people.value.forEach((person, _index) => {
+          person.index = _index + 1
+        });
 
         pagination.value.rowsPerPage = response.data.limit
         pagination.value.page = response.data.page+1
