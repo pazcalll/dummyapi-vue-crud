@@ -289,7 +289,7 @@ export default defineComponent({
       .then(response => {
         people.value = response.data.data
         people.value.forEach((person, _index) => {
-          person.index = _index + 1
+          person.index = _index + 1 + (response.data.limit*response.data.page)
         });
 
         pagination.value.rowsPerPage = response.data.limit

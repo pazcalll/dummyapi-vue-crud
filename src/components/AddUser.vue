@@ -95,15 +95,7 @@ export default {
   },
   methods: {
     onSubmit(e) {
-      // console.log(this.$refs.picture.file)
       this.loading = true
-      const formData = new FormData()
-      // formData.append('firstName', this.firstName)
-      // formData.append('lastName', this.lastName)
-      // formData.append('email', this.email)
-      // formData.append('title', this.title)
-      formData.append('picture', this.picture)
-      console.log(formData.get('firstName'))
       axios({
         url: 'https://dummyapi.io/data/v1/user/create',
         method: "POST",
